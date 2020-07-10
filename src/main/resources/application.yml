@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/client_db?serverTimezone=Europe/Warsaw
+    username: root
+    password: password
+
+server:
+  port: 8080
