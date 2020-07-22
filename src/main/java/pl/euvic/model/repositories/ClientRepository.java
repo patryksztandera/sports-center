@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import pl.euvic.model.entities.ClientEntity;
 
 @Repository
-public interface ClientRepository extends JpaRepository<ClientEntity,Long> {
+public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
 
 }

@@ -3,7 +3,6 @@ package pl.euvic.model.entities;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "client")

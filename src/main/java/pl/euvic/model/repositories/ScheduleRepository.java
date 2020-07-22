@@ -1,4 +1,10 @@
 package pl.euvic.model.repositories;
 
-public interface ScheduleRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import pl.euvic.model.entities.ScheduleEntity;
+
+@Repository
+public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> {
+
 }
