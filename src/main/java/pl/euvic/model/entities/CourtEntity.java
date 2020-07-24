@@ -1,6 +1,8 @@
 package pl.euvic.model.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "courts")
@@ -12,6 +14,9 @@ public class CourtEntity {
 
     @Column
     private String name;
+
+    @OneToMany(mappedBy = "courtEntity", cascade = CascadeType.ALL)
+    private List<ScheduleEntity> schedule = new ArrayList<>();
 
     public CourtEntity(final String name){
         this.name = name;

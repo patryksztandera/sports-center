@@ -7,4 +7,5 @@ import pl.euvic.model.entities.CourtEntity;
 @Repository
 public interface CourtRepository extends JpaRepository<CourtEntity, Long> {
 
+    CourtEntity getById(Long id);
 }

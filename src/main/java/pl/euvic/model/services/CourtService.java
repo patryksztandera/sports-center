@@ -25,6 +25,10 @@ public class CourtService {
                 .collect(Collectors.toList());
     }
 
+    public CourtRestModel getById(final Long id) {
+        return new CourtRestModel(courtRepository.getById(id));
+    }
+
     public Long add(CourtRestModel courtRestModel){
         return courtRepository.save(mapRestModel(courtRestModel)).getId();
     }

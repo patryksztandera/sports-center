@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.euvic.model.responses.ClientRestModel;
+import pl.euvic.model.responses.CourtRestModel;
 import pl.euvic.model.services.ClientService;
 import pl.euvic.model.services.ScheduleService;
 
@@ -28,6 +29,11 @@ public class ClientController {
         final List<ClientRestModel> clients = clientService.getAll();
 
         return ResponseEntity.ok(clients);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ClientRestModel> getById(@PathVariable final Long id) {
+        return ResponseEntity.ok(clientService.getById(id));
     }
 
     @PostMapping(

@@ -26,6 +26,11 @@ public class CourtController {
         return ResponseEntity.ok(courts);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<CourtRestModel> getById(@PathVariable final Long id) {
+        return ResponseEntity.ok(courtService.getById(id));
+    }
+
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> addCourt(@RequestBody final CourtRestModel court){
         return ResponseEntity.ok(courtService.add(court));

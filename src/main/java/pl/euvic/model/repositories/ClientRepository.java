@@ -7,4 +7,5 @@ import pl.euvic.model.entities.ClientEntity;
 @Repository
 public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
 
+    ClientEntity getById(Long id);
 }

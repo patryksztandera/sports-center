@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.euvic.model.entities.ClientEntity;
 import pl.euvic.model.repositories.ClientRepository;
 import pl.euvic.model.responses.ClientRestModel;
+import pl.euvic.model.responses.CourtRestModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,10 @@ public class ClientService {
         return clientRepository.findAll().stream()
                 .map(ClientRestModel::new)
                 .collect(Collectors.toList());
+    }
+
+    public ClientRestModel getById(final Long id) {
+        return new ClientRestModel(clientRepository.getById(id));
     }
 
     public Long add(ClientRestModel clientRestModel){
