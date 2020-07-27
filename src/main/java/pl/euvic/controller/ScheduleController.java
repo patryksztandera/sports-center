@@ -55,9 +55,12 @@ ZonedDateTime endTime = ZonedDateTime.parse(model.getEndTime());
 
                     emailService.sendMail(clientService.getById(model.getClientId()).getEmail(),
                     "Confirmation from Sports Centre",
-                    "Hi "+clientService.getById(model.getClientId()).getName()+",\n\nWe confirm your reservation. Court \""+
+                    "Hi "+clientService.getById(model.getClientId()).getName()+
+                            ",\n\nWe confirm your reservation. Court \""+
                             courtService.getById(model.getCourtId()).getName()+"\" for "+
-                            ChronoUnit.MINUTES.between(startTime,endTime)+" min at "+startTime.toLocalDateTime().format(formatter)+".\n\nSports Centre Team");
+                            ChronoUnit.MINUTES.between(startTime,endTime)+" min at "+
+                            startTime.toLocalDateTime().format(formatter)+
+                            ".\n\nSports Centre Team");
 
             return ResponseEntity.ok(scheduleService.add(model));
         }
