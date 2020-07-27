@@ -34,13 +34,7 @@ public class ScheduleServiceTests {
     private ClientService clientService;
 
     @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
     private CourtService courtService;
-
-    @Autowired
-    private CourtRepository courtRepository;
 
     @BeforeEach
     void initializeDatabase() {
