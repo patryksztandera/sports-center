@@ -40,8 +40,8 @@ public class ScheduleService {
     }
 
     public ScheduleEntity mapRestModel(ScheduleRestModel model) {
-        return new ScheduleEntity(model.getStartTime(),
-                model.getEndTime(),
+        return new ScheduleEntity(ZonedDateTime.parse(model.getStartTime()),
+                ZonedDateTime.parse(model.getEndTime()),
                 clientRepository.getById(model.getClientId()),
                 courtRepository.getById(model.getCourtId()));
     }

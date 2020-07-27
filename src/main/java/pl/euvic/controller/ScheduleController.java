@@ -47,18 +47,17 @@ public class ScheduleController {
     @PostMapping(
             consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> addSchedule(@RequestBody final ScheduleRestModel model) {
-
-        if (model.getStartTime().getMinute() % 30 == 0
-                && model.getEndTime().getMinute() % 30 == 0) {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-            model.getStartTime().format(formatter);
-            String zoneId = model.getStartTime().getZone().getId();
+ZonedDateTime startTime = ZonedDateTime.parse(model.getStartTime());
+ZonedDateTime endTime = ZonedDateTime.parse(model.getEndTime());
+        if (startTime.getMinute() % 30 == 0
+                && endTime.getMinute() % 30 == 0) {
+             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd.MM.yyyy");
 
                     emailService.sendMail(clientService.getById(model.getClientId()).getEmail(),
                     "Confirmation from Sports Centre",
-                    "Hi "+clientService.getById(model.getClientId()).getName()+",\nWe confirm your reservation. Court \""+
-                            courtService.getById(model.getCourtId()).getName()+"\" at "+
-                            ChronoUnit.MINUTES.between(model.getStartTime(),model.getEndTime())+" "+ model.getStartTime() +model.getStartTime().toLocalDate() +".");
+                    "Hi "+clientService.getById(model.getClientId()).getName()+",\n\nWe confirm your reservation. Court \""+
+                            courtService.getById(model.getCourtId()).getName()+"\" for "+
+                            ChronoUnit.MINUTES.between(startTime,endTime)+" min at "+startTime.toLocalDateTime().format(formatter)+".\n\nSports Centre Team");
 
             return ResponseEntity.ok(scheduleService.add(model));
         }
