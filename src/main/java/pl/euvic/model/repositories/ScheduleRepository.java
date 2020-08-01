@@ -7,4 +7,5 @@ import pl.euvic.model.entities.ScheduleEntity;
 @Repository
 public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> {
 
+    ScheduleEntity getById(Long id);
 }

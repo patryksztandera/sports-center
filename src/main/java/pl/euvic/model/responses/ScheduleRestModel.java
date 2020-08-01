@@ -2,24 +2,20 @@ package pl.euvic.model.responses;
 
 import pl.euvic.model.entities.ScheduleEntity;
 
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ScheduleRestModel {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    private ZonedDateTime startTime;
 
-    private String startTime;
-
-    private String endTime;
-
-    private Long clientId;
+    private ZonedDateTime endTime;
 
     private Long courtId;
 
-    public ScheduleRestModel(String startTime, String endTime, Long clientId, Long courtId) {
+    public ScheduleRestModel(ZonedDateTime startTime, ZonedDateTime endTime, Long courtId) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.clientId = clientId;
         this.courtId = courtId;
     }
 
@@ -27,22 +23,17 @@ public class ScheduleRestModel {
     }
 
     public ScheduleRestModel(ScheduleEntity entity) {
-        this.startTime = entity.getStartTime().format(formatter);
-        this.endTime = entity.getEndTime().format(formatter);
-        this.clientId = entity.getClientEntity().getId();
+        this.startTime = entity.getStartTime();
+        this.endTime = entity.getEndTime();
         this.courtId = entity.getCourtEntity().getId();
     }
 
-    public String getStartTime() {
+    public ZonedDateTime getStartTime() {
         return startTime;
     }
 
-    public String getEndTime() {
+    public ZonedDateTime getEndTime() {
         return endTime;
-    }
-
-    public Long getClientId() {
-        return clientId;
     }
 
     public Long getCourtId() {

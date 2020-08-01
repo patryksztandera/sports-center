@@ -18,17 +18,12 @@ public class ScheduleEntity {
     private ZonedDateTime endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
-    private ClientEntity clientEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "court_id")
     private CourtEntity courtEntity;
 
-    public ScheduleEntity(ZonedDateTime startTime, ZonedDateTime endTime, ClientEntity clientEntity, CourtEntity courtEntity) {
+    public ScheduleEntity(ZonedDateTime startTime, ZonedDateTime endTime, CourtEntity courtEntity) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.clientEntity = clientEntity;
         this.courtEntity = courtEntity;
     }
 
@@ -45,10 +40,6 @@ public class ScheduleEntity {
 
     public ZonedDateTime getEndTime() {
         return endTime;
-    }
-
-    public ClientEntity getClientEntity() {
-        return clientEntity;
     }
 
     public CourtEntity getCourtEntity() {

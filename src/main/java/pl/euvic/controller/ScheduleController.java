@@ -34,7 +34,7 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
         this.clientService = clientService;
         this.courtService = courtService;
-        this.emailService =emailService;
+        this.emailService = emailService;
     }
 
     @GetMapping
@@ -46,24 +46,8 @@ public class ScheduleController {
 
     @PostMapping(
             consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> addSchedule(@RequestBody final ScheduleRestModel model) {
-ZonedDateTime startTime = ZonedDateTime.parse(model.getStartTime());
-ZonedDateTime endTime = ZonedDateTime.parse(model.getEndTime());
-        if (startTime.getMinute() % 30 == 0
-                && endTime.getMinute() % 30 == 0) {
-             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd.MM.yyyy");
+    public ResponseEntity<List<Long>> addSchedule(@RequestBody final ScheduleRestModel model) {
 
-                    emailService.sendMail(clientService.getById(model.getClientId()).getEmail(),
-                    "Confirmation from Sports Centre",
-                    "Hi "+clientService.getById(model.getClientId()).getName()+
-                            ",\n\nWe confirm your reservation. Court \""+
-                            courtService.getById(model.getCourtId()).getName()+"\" for "+
-                            ChronoUnit.MINUTES.between(startTime,endTime)+" min at "+
-                            startTime.toLocalDateTime().format(formatter)+
-                            ".\n\nSports Centre Team");
-
-            return ResponseEntity.ok(scheduleService.add(model));
-        }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(scheduleService.add(model));
     }
 }

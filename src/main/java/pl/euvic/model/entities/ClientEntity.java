@@ -29,7 +29,7 @@ public class ClientEntity {
     private String phone;
 
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL)
-    private final List<ScheduleEntity> schedule = new ArrayList<>();
+    private final List<ReservationEntity> reservation = new ArrayList<>();
 
     public ClientEntity(final String name, final String surname, final String email, final String phone){
         this.name = name;

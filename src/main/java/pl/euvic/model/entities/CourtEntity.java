@@ -18,6 +18,9 @@ public class CourtEntity {
     @OneToMany(mappedBy = "courtEntity", cascade = CascadeType.ALL)
     private List<ScheduleEntity> schedule = new ArrayList<>();
 
+    @OneToMany(mappedBy = "courtEntity", cascade = CascadeType.ALL)
+    private List<ReservationEntity> reservation = new ArrayList<>();
+
     public CourtEntity(final String name){
         this.name = name;
     }

@@ -9,6 +9,7 @@ import pl.euvic.model.responses.ScheduleRestModel;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,14 +19,11 @@ import static java.time.ZoneOffset.UTC;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-    private final ClientRepository clientRepository;
     private final CourtRepository courtRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository,
-                           ClientRepository clientRepository,
                            CourtRepository courtRepository) {
         this.scheduleRepository = scheduleRepository;
-        this.clientRepository = clientRepository;
         this.courtRepository = courtRepository;
     }
 
@@ -35,14 +33,26 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
-    public Long add(ScheduleRestModel scheduleRestModel) {
-        return scheduleRepository.save(mapRestModel(scheduleRestModel)).getId();
+    public List<Long> add(ScheduleRestModel scheduleRestModel) {
+
+        List<Long> schedule = new ArrayList<>();
+
+        for (ZonedDateTime iterator = scheduleRestModel.getStartTime();
+             iterator.isBefore(scheduleRestModel.getEndTime());
+             iterator = iterator.plusMinutes(30L)) {
+            ScheduleRestModel model = new ScheduleRestModel(
+                    iterator,
+                    iterator.plusMinutes(30),
+                    scheduleRestModel.getCourtId());
+            schedule.add(scheduleRepository.save(mapRestModel(model)).getId());
+        }
+        return schedule;
     }
 
     public ScheduleEntity mapRestModel(ScheduleRestModel model) {
-        return new ScheduleEntity(ZonedDateTime.parse(model.getStartTime()),
-                ZonedDateTime.parse(model.getEndTime()),
-                clientRepository.getById(model.getClientId()),
+        return new ScheduleEntity(
+                model.getStartTime(),
+                model.getEndTime(),
                 courtRepository.getById(model.getCourtId()));
     }
 }
