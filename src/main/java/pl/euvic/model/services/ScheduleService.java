@@ -40,6 +40,7 @@ public class ScheduleService {
         for (ZonedDateTime iterator = scheduleRestModel.getStartTime();
              iterator.isBefore(scheduleRestModel.getEndTime());
              iterator = iterator.plusMinutes(30L)) {
+
             ScheduleRestModel model = new ScheduleRestModel(
                     iterator,
                     iterator.plusMinutes(30),

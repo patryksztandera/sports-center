@@ -8,20 +8,21 @@ public class ReservationRestModel {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
-    private String startTime;
+    //private String startTime;
 
-    private String endTime;
+    //private String endTime;
 
-    private Long scheduleId;
+    private Long startScheduleId;
+
+    private Long endScheduleId;
 
     private Long clientId;
 
-    private Long courtId;
-
-    public ReservationRestModel(Long scheduleId, Long clientId) {
+    public ReservationRestModel(Long startScheduleId,Long endScheduleId, Long clientId) {
         //this.startTime = startTime;
         //this.endTime = endTime;
-        this.scheduleId = scheduleId;
+        this.startScheduleId = startScheduleId;
+        this.endScheduleId = endScheduleId;
         this.clientId = clientId;
 
     }
@@ -30,29 +31,20 @@ public class ReservationRestModel {
     }
 
     public ReservationRestModel(ReservationEntity entity) {
-        this.startTime = entity.getStartTime().format(formatter);
-        this.endTime = entity.getEndTime().format(formatter);
+        //this.startTime = entity.getStartTime().format(formatter);
+        //this.endTime = entity.getEndTime().format(formatter);
         this.clientId = entity.getClientEntity().getId();
-        this.courtId = entity.getCourtEntity().getId();
     }
 
-    public Long getScheduleId() {
-        return scheduleId;
+    public Long getStartScheduleId() {
+        return startScheduleId;
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
+    public Long getEndScheduleId() {
+        return endScheduleId;
     }
 
     public Long getClientId() {
         return clientId;
-    }
-
-    public Long getCourtId() {
-        return courtId;
     }
 }

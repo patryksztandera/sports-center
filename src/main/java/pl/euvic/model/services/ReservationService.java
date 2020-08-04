@@ -50,8 +50,8 @@ public class ReservationService {
         Long id = reservationRepository.save(mapRestModel(reservationRestModel)).getId();
 
 
-        ZonedDateTime startTime = scheduleRepository.getById(reservationRestModel.getScheduleId()).getStartTime();
-        ZonedDateTime endTime = scheduleRepository.getById(reservationRestModel.getScheduleId()).getEndTime();
+        ZonedDateTime startTime = scheduleRepository.getById(reservationRestModel.getStartScheduleId()).getStartTime();
+        ZonedDateTime endTime = scheduleRepository.getById(reservationRestModel.getEndScheduleId()).getEndTime();
 
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd.MM.yyyy");
 
@@ -60,20 +60,19 @@ public class ReservationService {
                     "Hi " + clientService.getById(reservationRestModel.getClientId()).getName() +
                             ",\n\nWe confirm your reservation. Court \"" +
                             courtService.getById(scheduleRepository.getById(
-                                    reservationRestModel.getScheduleId())
+                                    reservationRestModel.getStartScheduleId())
                                     .getCourtEntity().getId()).getName() + "\" for " +
                             ChronoUnit.MINUTES.between(startTime, endTime) + " min at " +
                             startTime.toLocalDateTime().format(formatter) +
                             ".\n\nSports Centre Team");
-        scheduleRepository.deleteById(reservationRestModel.getScheduleId());
+
         return id;
     }
 
     public ReservationEntity mapRestModel(ReservationRestModel model) {
         return new ReservationEntity(
-                scheduleRepository.getById(model.getScheduleId()).getStartTime(),
-                scheduleRepository.getById(model.getScheduleId()).getEndTime(),
-                clientRepository.getById(model.getClientId()),
-                scheduleRepository.getById(model.getScheduleId()).getCourtEntity());
+                scheduleRepository.getById(model.getStartScheduleId()).getStartTime(),
+                scheduleRepository.getById(model.getEndScheduleId()).getEndTime(),
+                clientRepository.getById(model.getClientId()));
     }
 }

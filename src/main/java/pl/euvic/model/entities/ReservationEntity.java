@@ -21,15 +21,10 @@ public class ReservationEntity {
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "court_id")
-    private CourtEntity courtEntity;
-
-    public ReservationEntity(ZonedDateTime startTime, ZonedDateTime endTime, ClientEntity clientEntity, CourtEntity courtEntity) {
+    public ReservationEntity(ZonedDateTime startTime, ZonedDateTime endTime, ClientEntity clientEntity) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.clientEntity = clientEntity;
-        this.courtEntity = courtEntity;
     }
 
     public ReservationEntity() {
@@ -49,9 +44,5 @@ public class ReservationEntity {
 
     public ClientEntity getClientEntity() {
         return clientEntity;
-    }
-
-    public CourtEntity getCourtEntity() {
-        return courtEntity;
     }
 }

@@ -11,6 +11,8 @@ public class ScheduleRestModel {
 
     private ZonedDateTime endTime;
 
+    private Boolean reserved;
+
     private Long courtId;
 
     public ScheduleRestModel(ZonedDateTime startTime, ZonedDateTime endTime, Long courtId) {
@@ -26,6 +28,7 @@ public class ScheduleRestModel {
         this.startTime = entity.getStartTime();
         this.endTime = entity.getEndTime();
         this.courtId = entity.getCourtEntity().getId();
+        this.reserved = false;
     }
 
     public ZonedDateTime getStartTime() {
@@ -34,6 +37,10 @@ public class ScheduleRestModel {
 
     public ZonedDateTime getEndTime() {
         return endTime;
+    }
+
+    public Boolean getReserved() {
+        return reserved;
     }
 
     public Long getCourtId() {
