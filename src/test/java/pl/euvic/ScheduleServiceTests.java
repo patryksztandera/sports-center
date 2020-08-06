@@ -1,5 +1,6 @@
 package pl.euvic;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,29 +28,40 @@ public class ScheduleServiceTests {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    //@Autowired
-    //private ClientService clientService;
-
     @Autowired
     private CourtService courtService;
 
     @BeforeEach
     void initializeDatabase() {
-       // final ClientRestModel client = new ClientRestModel("Name","Surname","name.surname@gmail.com","+48 123 456 789");
         final CourtRestModel court = new CourtRestModel("court");
-       // clientService.add(client);
         courtService.add(court);
     }
 
-    @Test
-    void addSchedule(){
-        final ScheduleRestModel model = new ScheduleRestModel(ZonedDateTime.parse("2020-07-30T09:00:00+02:00"),
-                ZonedDateTime.parse("2020-07-30T14:30:00+02:00"),1L);
+    @AfterEach
+    void tearDown() {
+        scheduleRepository.deleteAll();
+    }
 
-        assertEquals(0,scheduleRepository.count());
+    @Test
+    void addOneSlotInSchedule() {
+        final ScheduleRestModel model = new ScheduleRestModel(ZonedDateTime.parse("2020-07-30T09:00:00+02:00"),
+                ZonedDateTime.parse("2020-07-30T09:30:00+02:00"), 1L);
+
+        assertEquals(0, scheduleRepository.count());
 
         scheduleService.add(model);
-        assertEquals(1,scheduleRepository.count());
+        assertEquals(1, scheduleRepository.count());
+    }
+
+    @Test
+    void addSchedule() {
+        final ScheduleRestModel model = new ScheduleRestModel(ZonedDateTime.parse("2020-07-30T09:00:00+02:00"),
+                ZonedDateTime.parse("2020-07-30T14:30:00+02:00"), 1L);
+
+        assertEquals(0, scheduleRepository.count());
+
+        scheduleService.add(model);
+        assertEquals(11, scheduleRepository.count());
     }
 
 }
