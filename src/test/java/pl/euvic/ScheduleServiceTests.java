@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import pl.euvic.model.repositories.ScheduleRepository;
-import pl.euvic.model.responses.ClientRestModel;
 import pl.euvic.model.responses.CourtRestModel;
 import pl.euvic.model.responses.ScheduleRestModel;
-import pl.euvic.model.services.ClientService;
 import pl.euvic.model.services.CourtService;
 import pl.euvic.model.services.ScheduleService;
 

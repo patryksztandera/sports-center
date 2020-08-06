@@ -1,10 +1,8 @@
 package pl.euvic.model.services;
 
 import org.springframework.stereotype.Service;
-import pl.euvic.model.entities.ClientEntity;
 import pl.euvic.model.entities.CourtEntity;
 import pl.euvic.model.repositories.CourtRepository;
-import pl.euvic.model.responses.ClientRestModel;
 import pl.euvic.model.responses.CourtRestModel;
 
 import java.util.List;

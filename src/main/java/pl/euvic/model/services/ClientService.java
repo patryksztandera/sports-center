@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pl.euvic.model.entities.ClientEntity;
 import pl.euvic.model.repositories.ClientRepository;
 import pl.euvic.model.responses.ClientRestModel;
-import pl.euvic.model.responses.CourtRestModel;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -7,13 +7,10 @@ import pl.euvic.model.repositories.CourtRepository;
 import pl.euvic.model.repositories.ScheduleRepository;
 import pl.euvic.model.responses.ScheduleRestModel;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.time.ZoneOffset.UTC;
 
 @Service
 public class ScheduleService {

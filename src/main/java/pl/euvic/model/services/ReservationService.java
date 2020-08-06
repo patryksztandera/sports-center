@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pl.euvic.model.entities.ReservationEntity;
 import pl.euvic.model.entities.ScheduleEntity;
 import pl.euvic.model.repositories.ClientRepository;
-import pl.euvic.model.repositories.CourtRepository;
 import pl.euvic.model.repositories.ReservationRepository;
 import pl.euvic.model.repositories.ScheduleRepository;
 import pl.euvic.model.responses.ReservationRestModel;
@@ -30,7 +29,7 @@ public class ReservationService {
                               ClientService clientService,
                               ClientRepository clientRepository,
                               EmailService emailService,
-    CourtService courtService) {
+                              CourtService courtService) {
         this.reservationRepository = reservationRepository;
         this.scheduleRepository = scheduleRepository;
         this.clientService = clientService;

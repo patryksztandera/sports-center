@@ -1,15 +1,10 @@
 package pl.euvic.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.euvic.model.responses.ClientRestModel;
-import pl.euvic.model.responses.CourtRestModel;
 import pl.euvic.model.services.ClientService;
-import pl.euvic.model.services.ScheduleService;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
