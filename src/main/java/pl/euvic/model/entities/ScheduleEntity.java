@@ -17,6 +17,9 @@ public class ScheduleEntity {
     @Column
     private ZonedDateTime endTime;
 
+    @Column
+    private Boolean reserved;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "court_id")
     private CourtEntity courtEntity;
@@ -25,6 +28,7 @@ public class ScheduleEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.courtEntity = courtEntity;
+        this.reserved = false;
     }
 
     public ScheduleEntity() {
@@ -42,7 +46,15 @@ public class ScheduleEntity {
         return endTime;
     }
 
+    public Boolean getReserved() {
+        return reserved;
+    }
+
     public CourtEntity getCourtEntity() {
         return courtEntity;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
     }
 }

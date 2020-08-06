@@ -53,18 +53,27 @@ public class ReservationService {
         ZonedDateTime startTime = scheduleRepository.getById(reservationRestModel.getStartScheduleId()).getStartTime();
         ZonedDateTime endTime = scheduleRepository.getById(reservationRestModel.getEndScheduleId()).getEndTime();
 
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd.MM.yyyy");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd.MM.yyyy");
 
-            emailService.sendMail(clientService.getById(reservationRestModel.getClientId()).getEmail(),
-                    "Confirmation from Sports Centre",
-                    "Hi " + clientService.getById(reservationRestModel.getClientId()).getName() +
-                            ",\n\nWe confirm your reservation. Court \"" +
-                            courtService.getById(scheduleRepository.getById(
-                                    reservationRestModel.getStartScheduleId())
-                                    .getCourtEntity().getId()).getName() + "\" for " +
-                            ChronoUnit.MINUTES.between(startTime, endTime) + " min at " +
-                            startTime.toLocalDateTime().format(formatter) +
-                            ".\n\nSports Centre Team");
+        emailService.sendMail(clientService.getById(reservationRestModel.getClientId()).getEmail(),
+                "Confirmation from Sports Centre",
+                "Hi " + clientService.getById(reservationRestModel.getClientId()).getName() +
+                        ",\n\nWe confirm your reservation. Court \"" +
+                        courtService.getById(scheduleRepository.getById(
+                                reservationRestModel.getStartScheduleId())
+                                .getCourtEntity().getId()).getName() + "\" for " +
+                        ChronoUnit.MINUTES.between(startTime, endTime) + " min at " +
+                        startTime.toLocalDateTime().format(formatter) +
+                        ".\n\nSports Centre Team");
+
+        for (Long iterator = reservationRestModel.getStartScheduleId();
+             iterator <= reservationRestModel.getEndScheduleId();
+             iterator++) {
+
+            ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
+            scheduleEntity.setReserved(true);
+            scheduleRepository.save(scheduleEntity);
+        }
 
         return id;
     }

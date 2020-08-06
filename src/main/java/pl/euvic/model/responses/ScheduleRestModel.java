@@ -28,7 +28,7 @@ public class ScheduleRestModel {
         this.startTime = entity.getStartTime();
         this.endTime = entity.getEndTime();
         this.courtId = entity.getCourtEntity().getId();
-        this.reserved = false;
+        this.reserved = entity.getReserved();
     }
 
     public ZonedDateTime getStartTime() {
