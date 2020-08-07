@@ -32,4 +32,10 @@ public class ReservationController {
     public ResponseEntity<Long> addReservation(@RequestBody final ReservationRestModel model) {
         return ResponseEntity.ok(reservationService.add(model));
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteById(@PathVariable final Long id) {
+        reservationService.deleteById(id);
+        return  ResponseEntity.noContent().build();
+    }
 }

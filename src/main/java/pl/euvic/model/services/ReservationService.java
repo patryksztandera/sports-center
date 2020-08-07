@@ -79,8 +79,23 @@ public class ReservationService {
 
     public ReservationEntity mapRestModel(ReservationRestModel model) {
         return new ReservationEntity(
-                scheduleRepository.getById(model.getStartScheduleId()).getStartTime(),
-                scheduleRepository.getById(model.getEndScheduleId()).getEndTime(),
+                scheduleRepository.getById(model.getStartScheduleId()),
+                scheduleRepository.getById(model.getEndScheduleId()),
                 clientRepository.getById(model.getClientId()));
+    }
+
+    public void deleteById(Long id) {
+
+        ReservationEntity reservationEntity = reservationRepository.getOne(id);
+        for (Long iterator = reservationEntity.getStartReservation().getId();
+             iterator <= reservationEntity.getEndReservation().getId();
+             iterator++) {
+
+            ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
+            scheduleEntity.setReserved(false);
+            scheduleRepository.save(scheduleEntity);
+        }
+
+        reservationRepository.deleteById(id);
     }
 }

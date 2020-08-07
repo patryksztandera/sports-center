@@ -2,6 +2,8 @@ package pl.euvic.model.entities;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "schedule")
@@ -23,6 +25,13 @@ public class ScheduleEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "court_id")
     private CourtEntity courtEntity;
+
+    @OneToMany(mappedBy = "startReservation", cascade = CascadeType.ALL)
+    private List<ReservationEntity> startReservation = new ArrayList<>();
+
+    @OneToMany(mappedBy = "endReservation", cascade = CascadeType.ALL)
+    private List<ReservationEntity> endReservation = new ArrayList<>();
+
 
     public ScheduleEntity(ZonedDateTime startTime, ZonedDateTime endTime, CourtEntity courtEntity) {
         this.startTime = startTime;

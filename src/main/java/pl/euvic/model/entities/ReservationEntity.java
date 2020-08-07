@@ -11,19 +11,21 @@ public class ReservationEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column
-    private ZonedDateTime startTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "start_id")
+    private ScheduleEntity startReservation;
 
-    @Column
-    private ZonedDateTime endTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "end_id")
+    private ScheduleEntity endReservation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
-    public ReservationEntity(ZonedDateTime startTime, ZonedDateTime endTime, ClientEntity clientEntity) {
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public ReservationEntity(ScheduleEntity startReservation, ScheduleEntity endReservation, ClientEntity clientEntity) {
+        this.startReservation = startReservation;
+        this.endReservation = endReservation;
         this.clientEntity = clientEntity;
     }
 
@@ -34,12 +36,12 @@ public class ReservationEntity {
         return id;
     }
 
-    public ZonedDateTime getStartTime() {
-        return startTime;
+    public ScheduleEntity getStartReservation() {
+        return startReservation;
     }
 
-    public ZonedDateTime getEndTime() {
-        return endTime;
+    public ScheduleEntity getEndReservation() {
+        return endReservation;
     }
 
     public ClientEntity getClientEntity() {
