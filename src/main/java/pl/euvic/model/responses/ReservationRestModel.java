@@ -10,17 +10,18 @@ public class ReservationRestModel {
 
     private Long clientId;
 
-    public ReservationRestModel(Long startScheduleId,Long endScheduleId, Long clientId) {
+    public ReservationRestModel(Long startScheduleId, Long endScheduleId, Long clientId) {
         this.startScheduleId = startScheduleId;
         this.endScheduleId = endScheduleId;
         this.clientId = clientId;
-
     }
 
     public ReservationRestModel() {
     }
 
     public ReservationRestModel(ReservationEntity entity) {
+        this.startScheduleId = entity.getStartReservation().getId();
+        this.endScheduleId = entity.getEndReservation().getId();
         this.clientId = entity.getClientEntity().getId();
     }
 

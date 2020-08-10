@@ -1,5 +1,6 @@
 package pl.euvic;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,13 +21,31 @@ public class CourtServiceTests {
     @Autowired
     private CourtRepository courtRepository;
 
+    @AfterEach
+    void tearDown() {
+        courtRepository.deleteAll();
+    }
+
     @Test
     void addCourt() {
         final CourtRestModel court = new CourtRestModel("court");
 
-        assertEquals(0,courtRepository.count());
+        assertEquals(0, courtRepository.count());
         courtService.add(court);
 
-        assertEquals(1,courtRepository.count());
+        assertEquals(1, courtRepository.count());
+    }
+
+    @Test
+    void deleteCourt() {
+        final CourtRestModel court = new CourtRestModel("court");
+
+        assertEquals(0, courtRepository.count());
+        courtService.add(court);
+
+        assertEquals(1, courtRepository.count());
+        courtService.deleteById(2L);
+
+        assertEquals(0, courtRepository.count());
     }
 }

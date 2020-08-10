@@ -1,6 +1,7 @@
 package pl.euvic.model.services;
 
 import org.springframework.stereotype.Service;
+import pl.euvic.exceptions.BadRequestException;
 import pl.euvic.model.entities.ReservationEntity;
 import pl.euvic.model.entities.ScheduleEntity;
 import pl.euvic.model.repositories.ClientRepository;
@@ -38,16 +39,29 @@ public class ReservationService {
         this.courtService = courtService;
     }
 
-    public List<ReservationRestModel> getAll(){
+    public List<ReservationRestModel> getAll() {
         return reservationRepository.findAll().stream()
                 .map(ReservationRestModel::new)
                 .collect(Collectors.toList());
     }
 
+    public ReservationRestModel getById(Long id) {
+        return new ReservationRestModel(reservationRepository.getOne(id));
+    }
+
     public Long add(ReservationRestModel reservationRestModel) {
 
-        Long id = reservationRepository.save(mapRestModel(reservationRestModel)).getId();
+        for (Long iterator = reservationRestModel.getStartScheduleId();
+             iterator <= reservationRestModel.getEndScheduleId();
+             iterator++) {
 
+            ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
+
+            if (scheduleEntity.getReserved()) {
+                throw new BadRequestException();
+            }
+        }
+        Long id = reservationRepository.save(mapRestModel(reservationRestModel)).getId();
 
         ZonedDateTime startTime = scheduleRepository.getById(reservationRestModel.getStartScheduleId()).getStartTime();
         ZonedDateTime endTime = scheduleRepository.getById(reservationRestModel.getEndScheduleId()).getEndTime();
@@ -73,7 +87,6 @@ public class ReservationService {
             scheduleEntity.setReserved(true);
             scheduleRepository.save(scheduleEntity);
         }
-
         return id;
     }
 
@@ -85,8 +98,8 @@ public class ReservationService {
     }
 
     public void deleteById(Long id) {
-
         ReservationEntity reservationEntity = reservationRepository.getOne(id);
+
         for (Long iterator = reservationEntity.getStartReservation().getId();
              iterator <= reservationEntity.getEndReservation().getId();
              iterator++) {
@@ -95,7 +108,6 @@ public class ReservationService {
             scheduleEntity.setReserved(false);
             scheduleRepository.save(scheduleEntity);
         }
-
         reservationRepository.deleteById(id);
     }
 }

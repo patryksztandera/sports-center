@@ -22,7 +22,6 @@ public class CourtController {
     @GetMapping
     public ResponseEntity<List<CourtRestModel>> listAllCourts() {
         final List<CourtRestModel> courts = courtService.getAll();
-
         return ResponseEntity.ok(courts);
     }
 
@@ -32,7 +31,13 @@ public class CourtController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> addCourt(@RequestBody final CourtRestModel court){
+    public ResponseEntity<Long> addCourt(@RequestBody final CourtRestModel court) {
         return ResponseEntity.ok(courtService.add(court));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        courtService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -22,14 +22,18 @@ public class ScheduleController {
     @GetMapping
     public ResponseEntity<List<ScheduleRestModel>> listAllSchedule() {
         final List<ScheduleRestModel> schedule = scheduleService.getAll();
-
         return ResponseEntity.ok(schedule);
     }
 
     @PostMapping(
             consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Long>> addSchedule(@RequestBody final ScheduleRestModel model) {
-
         return ResponseEntity.ok(scheduleService.add(model));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        scheduleService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

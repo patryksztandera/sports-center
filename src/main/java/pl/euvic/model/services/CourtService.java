@@ -17,7 +17,7 @@ public class CourtService {
         this.courtRepository = courtRepository;
     }
 
-    public List<CourtRestModel> getAll(){
+    public List<CourtRestModel> getAll() {
         return courtRepository.findAll().stream()
                 .map(CourtRestModel::new)
                 .collect(Collectors.toList());
@@ -27,11 +27,15 @@ public class CourtService {
         return new CourtRestModel(courtRepository.getById(id));
     }
 
-    public Long add(CourtRestModel courtRestModel){
+    public Long add(CourtRestModel courtRestModel) {
         return courtRepository.save(mapRestModel(courtRestModel)).getId();
     }
 
-    private CourtEntity mapRestModel(final CourtRestModel model){
+    private CourtEntity mapRestModel(final CourtRestModel model) {
         return new CourtEntity(model.getName());
+    }
+
+    public void deleteById(Long id) {
+        courtRepository.deleteById(id);
     }
 }

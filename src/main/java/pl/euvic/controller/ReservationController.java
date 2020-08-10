@@ -23,8 +23,12 @@ public class ReservationController {
     @GetMapping
     public ResponseEntity<List<ReservationRestModel>> listAllReservation() {
         final List<ReservationRestModel> reservation = reservationService.getAll();
-
         return ResponseEntity.ok(reservation);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ReservationRestModel> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(reservationService.getById(id));
     }
 
     @PostMapping(
@@ -36,6 +40,6 @@ public class ReservationController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteById(@PathVariable final Long id) {
         reservationService.deleteById(id);
-        return  ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,4 +1,11 @@
 package pl.euvic.exceptions;
 
-public class NotFoundException {
+import java.time.ZonedDateTime;
+
+public class NotFoundException extends ApiException {
+
+    public NotFoundException() {
+        super(ZonedDateTime.now(), "Sorry, thing you looking for does not exist", 404,"Not found");
+    }
+
 }

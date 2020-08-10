@@ -1,8 +1,8 @@
 package pl.euvic.model.services;
 
 import org.springframework.stereotype.Service;
+import pl.euvic.exceptions.BadRequestException;
 import pl.euvic.model.entities.ScheduleEntity;
-import pl.euvic.model.repositories.ClientRepository;
 import pl.euvic.model.repositories.CourtRepository;
 import pl.euvic.model.repositories.ScheduleRepository;
 import pl.euvic.model.responses.ScheduleRestModel;
@@ -24,7 +24,7 @@ public class ScheduleService {
         this.courtRepository = courtRepository;
     }
 
-    public List<ScheduleRestModel> getAll(){
+    public List<ScheduleRestModel> getAll() {
         return scheduleRepository.findAll().stream()
                 .map(ScheduleRestModel::new)
                 .collect(Collectors.toList());
@@ -34,6 +34,10 @@ public class ScheduleService {
 
         List<Long> schedule = new ArrayList<>();
 
+        if (scheduleRestModel.getStartTime().getMinute() % 30 != 0
+                && scheduleRestModel.getEndTime().getMinute() % 30 != 0) {
+            throw new BadRequestException();
+        }
         for (ZonedDateTime iterator = scheduleRestModel.getStartTime();
              iterator.isBefore(scheduleRestModel.getEndTime());
              iterator = iterator.plusMinutes(30L)) {
@@ -52,5 +56,9 @@ public class ScheduleService {
                 model.getStartTime(),
                 model.getEndTime(),
                 courtRepository.getById(model.getCourtId()));
+    }
+
+    public void deleteById(Long id) {
+        scheduleRepository.deleteById(id);
     }
 }
