@@ -22,21 +22,15 @@ public class ReservationService {
     private final ScheduleRepository scheduleRepository;
     private final ClientRepository clientRepository;
     private final EmailService emailService;
-    private final ClientService clientService;
-    private final CourtService courtService;
 
     public ReservationService(ReservationRepository reservationRepository,
                               ScheduleRepository scheduleRepository,
-                              ClientService clientService,
                               ClientRepository clientRepository,
-                              EmailService emailService,
-                              CourtService courtService) {
+                              EmailService emailService) {
         this.reservationRepository = reservationRepository;
         this.scheduleRepository = scheduleRepository;
-        this.clientService = clientService;
         this.clientRepository = clientRepository;
         this.emailService = emailService;
-        this.courtService = courtService;
     }
 
     public List<ReservationRestModel> getAll() {
@@ -56,37 +50,30 @@ public class ReservationService {
              iterator++) {
 
             ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
-
             if (scheduleEntity.getReserved()) {
                 throw new BadRequestException();
+            } else {
+                scheduleEntity.setReserved(true);
+                scheduleRepository.save(scheduleEntity);
             }
         }
         Long id = reservationRepository.save(mapRestModel(reservationRestModel)).getId();
 
-        ZonedDateTime startTime = scheduleRepository.getById(reservationRestModel.getStartScheduleId()).getStartTime();
-        ZonedDateTime endTime = scheduleRepository.getById(reservationRestModel.getEndScheduleId()).getEndTime();
-
+        ZonedDateTime startTime = reservationRepository.getOne(id).getStartReservation().getStartTime();
+        ZonedDateTime endTime = reservationRepository.getOne(id).getEndReservation().getEndTime();
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd.MM.yyyy");
 
-        emailService.sendMail(clientService.getById(reservationRestModel.getClientId()).getEmail(),
+        emailService.sendMail(
+                reservationRepository.getOne(id).getClientEntity().getEmail(),
                 "Confirmation from Sports Centre",
-                "Hi " + clientService.getById(reservationRestModel.getClientId()).getName() +
-                        ",\n\nWe confirm your reservation. Court \"" +
-                        courtService.getById(scheduleRepository.getById(
-                                reservationRestModel.getStartScheduleId())
-                                .getCourtEntity().getId()).getName() + "\" for " +
-                        ChronoUnit.MINUTES.between(startTime, endTime) + " min at " +
-                        startTime.toLocalDateTime().format(formatter) +
-                        ".\n\nSports Centre Team");
-
-        for (Long iterator = reservationRestModel.getStartScheduleId();
-             iterator <= reservationRestModel.getEndScheduleId();
-             iterator++) {
-
-            ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
-            scheduleEntity.setReserved(true);
-            scheduleRepository.save(scheduleEntity);
-        }
+                "Hi " +
+                        reservationRepository.getOne(id).getClientEntity().getName()
+                        + ",\n\nWe confirm your reservation: court \"" +
+                        reservationRepository.getOne(id).getStartReservation().getCourtEntity().getName()
+                        + "\" for " +
+                        ChronoUnit.MINUTES.between(startTime, endTime)
+                        + " min at " +
+                        startTime.toLocalDateTime().format(formatter) + ".\n\nSports Centre Team");
         return id;
     }
 

@@ -3,11 +3,12 @@ package pl.euvic.exceptions;
 import java.time.ZonedDateTime;
 
 public class ApiException extends RuntimeException {
+
     private final Integer status;
     private final ZonedDateTime time;
     private final String error;
 
-    protected ApiException(final ZonedDateTime time,final String message, final Integer status, final String error) {
+    protected ApiException(final ZonedDateTime time, final String message, final Integer status, final String error) {
         super(message);
         this.time = time;
         this.status = status;

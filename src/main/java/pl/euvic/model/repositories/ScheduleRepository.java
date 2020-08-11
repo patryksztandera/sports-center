@@ -8,5 +8,4 @@ import pl.euvic.model.entities.ScheduleEntity;
 public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> {
 
     ScheduleEntity getById(Long id);
-   // ScheduleEntity setReserved(Boolean reserved);
 }

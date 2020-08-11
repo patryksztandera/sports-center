@@ -37,16 +37,17 @@ public class ScheduleService {
         if (scheduleRestModel.getStartTime().getMinute() % 30 != 0
                 && scheduleRestModel.getEndTime().getMinute() % 30 != 0) {
             throw new BadRequestException();
-        }
-        for (ZonedDateTime iterator = scheduleRestModel.getStartTime();
-             iterator.isBefore(scheduleRestModel.getEndTime());
-             iterator = iterator.plusMinutes(30L)) {
+        } else {
+            for (ZonedDateTime iterator = scheduleRestModel.getStartTime();
+                 iterator.isBefore(scheduleRestModel.getEndTime());
+                 iterator = iterator.plusMinutes(30L)) {
 
-            ScheduleRestModel model = new ScheduleRestModel(
-                    iterator,
-                    iterator.plusMinutes(30),
-                    scheduleRestModel.getCourtId());
-            schedule.add(scheduleRepository.save(mapRestModel(model)).getId());
+                ScheduleRestModel model = new ScheduleRestModel(
+                        iterator,
+                        iterator.plusMinutes(30),
+                        scheduleRestModel.getCourtId());
+                schedule.add(scheduleRepository.save(mapRestModel(model)).getId());
+            }
         }
         return schedule;
     }
