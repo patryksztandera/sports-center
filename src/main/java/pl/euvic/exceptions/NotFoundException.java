@@ -1,10 +1,10 @@
 package pl.euvic.exceptions;
 
-import java.time.ZonedDateTime;
+import org.springframework.http.HttpStatus;
 
 public class NotFoundException extends ApiException {
 
-    public NotFoundException() {
-        super(ZonedDateTime.now(), "Sorry, thing you looking for does not exist", 404,"Not found");
+    public NotFoundException(String message) {
+        super(message, HttpStatus.NOT_FOUND);
     }
 }

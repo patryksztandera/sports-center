@@ -2,6 +2,7 @@ package pl.euvic.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.euvic.exceptions.NotFoundException;
 import pl.euvic.model.responses.ClientRestModel;
 import pl.euvic.model.services.ClientService;
 

@@ -1,6 +1,7 @@
 package pl.euvic.model.services;
 
 import org.springframework.stereotype.Service;
+import pl.euvic.exceptions.NotFoundException;
 import pl.euvic.model.entities.ClientEntity;
 import pl.euvic.model.repositories.ClientRepository;
 import pl.euvic.model.responses.ClientRestModel;
@@ -24,6 +25,10 @@ public class ClientService {
     }
 
     public ClientRestModel getById(final Long id) {
+        List<Long> list = clientRepository.findAll().stream().map(ClientEntity::getId).collect(Collectors.toList());
+        if (!list.contains(id)) {
+            throw new NotFoundException("Such pearson does not exist!");
+        }
         return new ClientRestModel(clientRepository.getById(id));
     }
 

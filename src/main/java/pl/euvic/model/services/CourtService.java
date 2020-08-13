@@ -1,6 +1,8 @@
 package pl.euvic.model.services;
 
 import org.springframework.stereotype.Service;
+import pl.euvic.exceptions.NotFoundException;
+import pl.euvic.model.entities.ClientEntity;
 import pl.euvic.model.entities.CourtEntity;
 import pl.euvic.model.repositories.CourtRepository;
 import pl.euvic.model.responses.CourtRestModel;
@@ -24,6 +26,10 @@ public class CourtService {
     }
 
     public CourtRestModel getById(final Long id) {
+        List<Long> list = courtRepository.findAll().stream().map(CourtEntity::getId).collect(Collectors.toList());
+        if (!list.contains(id)) {
+            throw new NotFoundException("Such court does not exist!");
+        }
         return new CourtRestModel(courtRepository.getById(id));
     }
 

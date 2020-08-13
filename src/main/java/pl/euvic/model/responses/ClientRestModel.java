@@ -1,6 +1,5 @@
 package pl.euvic.model.responses;
 
-
 import pl.euvic.model.entities.ClientEntity;
 
 public class ClientRestModel {
@@ -21,10 +20,10 @@ public class ClientRestModel {
     }
 
     public ClientRestModel(ClientEntity entity) {
-        this.name = entity.getName();
-        this.surname = entity.getSurname();
-        this.email = entity.getEmail();
-        this.phone = entity.getPhone();
+            this.name = entity.getName();
+            this.surname = entity.getSurname();
+            this.email = entity.getEmail();
+            this.phone = entity.getPhone();
     }
 
     public String getName() {

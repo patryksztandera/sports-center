@@ -2,6 +2,8 @@ package pl.euvic.model.services;
 
 import org.springframework.stereotype.Service;
 import pl.euvic.exceptions.BadRequestException;
+import pl.euvic.exceptions.NotFoundException;
+import pl.euvic.model.entities.CourtEntity;
 import pl.euvic.model.entities.ReservationEntity;
 import pl.euvic.model.entities.ScheduleEntity;
 import pl.euvic.model.repositories.ClientRepository;
@@ -40,6 +42,12 @@ public class ReservationService {
     }
 
     public ReservationRestModel getById(Long id) {
+        List<Long> list = reservationRepository.findAll().stream()
+                .map(ReservationEntity::getId)
+                .collect(Collectors.toList());
+        if (!list.contains(id)) {
+            throw new NotFoundException("Such reservation does not exist!");
+        }
         return new ReservationRestModel(reservationRepository.getOne(id));
     }
 
@@ -51,7 +59,7 @@ public class ReservationService {
 
             ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
             if (scheduleEntity.getReserved()) {
-                throw new BadRequestException();
+                throw new BadRequestException("Reserved events were chosen");
             } else {
                 scheduleEntity.setReserved(true);
                 scheduleRepository.save(scheduleEntity);
@@ -59,8 +67,8 @@ public class ReservationService {
         }
         Long id = reservationRepository.save(mapRestModel(reservationRestModel)).getId();
 
-        ZonedDateTime startTime = reservationRepository.getOne(id).getStartReservation().getStartTime();
-        ZonedDateTime endTime = reservationRepository.getOne(id).getEndReservation().getEndTime();
+        final ZonedDateTime startTime = reservationRepository.getOne(id).getStartReservation().getStartTime();
+        final ZonedDateTime endTime = reservationRepository.getOne(id).getEndReservation().getEndTime();
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm, dd.MM.yyyy");
 
         emailService.sendMail(

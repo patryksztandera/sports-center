@@ -1,41 +1,31 @@
 package pl.euvic.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 import java.time.ZonedDateTime;
 
 public class ApiException extends RuntimeException {
 
-    private final Integer status;
+    private final HttpStatus status;
     private final ZonedDateTime time;
-    private final String error;
 
-    protected ApiException(final ZonedDateTime time, final String message, final Integer status, final String error) {
+    protected ApiException(final String message, final HttpStatus status) {
         super(message);
-        this.time = time;
+        this.time = ZonedDateTime.now();
         this.status = status;
-        this.error = error;
     }
 
     public ApiException() {
         super("Internal Server Error");
         this.time = ZonedDateTime.now();
-        this.status = 500;
-        this.error = "Internal Server Error";
-    }
-
-    public Integer getStatus() {
-        return status;
+        this.status = HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
     public ZonedDateTime getTime() {
         return time;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    @Override
-    public String toString() {
-        return getStatus() + " - " + getMessage();
+    public HttpStatus getStatus() {
+        return status;
     }
 }

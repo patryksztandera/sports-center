@@ -1,8 +1,8 @@
-package pl.euvic.handlers;
+package pl.euvic.handler;
 
 import java.time.ZonedDateTime;
 
-public class ErrorMessage {
+public class ErrorResponse {
 
     private final ZonedDateTime timestamp;
 
@@ -14,7 +14,7 @@ public class ErrorMessage {
 
     private final String path;
 
-    ErrorMessage(ZonedDateTime timestamp, Integer status, String error, String message, String path) {
+    ErrorResponse(ZonedDateTime timestamp, Integer status, String error, String message, String path) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
