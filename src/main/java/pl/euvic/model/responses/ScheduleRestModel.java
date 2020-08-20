@@ -3,7 +3,6 @@ package pl.euvic.model.responses;
 import pl.euvic.model.entities.ScheduleEntity;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class ScheduleRestModel {
 

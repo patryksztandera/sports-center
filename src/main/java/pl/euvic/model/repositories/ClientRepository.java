@@ -8,4 +8,5 @@ import pl.euvic.model.entities.ClientEntity;
 public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
 
     ClientEntity getById(Long id);
+    ClientEntity getByEmail(String email);
 }

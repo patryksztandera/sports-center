@@ -1,6 +1,13 @@
 package pl.euvic.model.services;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.euvic.configuration.AppUserPrincipal;
 import pl.euvic.exceptions.NotFoundException;
 import pl.euvic.model.entities.ClientEntity;
 import pl.euvic.model.repositories.ClientRepository;
@@ -10,7 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ClientService {
+public class ClientService implements UserDetailsService {
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final ClientRepository clientRepository;
 
@@ -32,12 +41,18 @@ public class ClientService {
         return new ClientRestModel(clientRepository.getById(id));
     }
 
-    public Long add(ClientRestModel clientRestModel){
+    public Long add(ClientRestModel clientRestModel) {
         return clientRepository.save(mapRestModel(clientRestModel)).getId();
     }
 
-    private ClientEntity mapRestModel(final ClientRestModel model){
-        return new ClientEntity(model.getName(),model.getSurname(),model.getEmail(),model.getPhone());
+    private ClientEntity mapRestModel(final ClientRestModel model) {
+        return new ClientEntity(model.getName(), model.getSurname(), model.getEmail(),
+                passwordEncoder.encode(model.getPassword()), model.getPhone());
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        ClientEntity clientEntity = clientRepository.getByEmail(email);
+        return new AppUserPrincipal(clientEntity);
+    }
 }

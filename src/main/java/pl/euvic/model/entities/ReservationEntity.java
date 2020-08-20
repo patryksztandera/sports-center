@@ -1,7 +1,6 @@
 package pl.euvic.model.entities;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "reservations")
