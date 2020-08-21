@@ -35,7 +35,7 @@ public class ScheduleService {
         List<Long> schedule = new ArrayList<>();
 
         if (scheduleRestModel.getStartTime().getMinute() % 30 != 0
-                && scheduleRestModel.getEndTime().getMinute() % 30 != 0) {
+                || scheduleRestModel.getEndTime().getMinute() % 30 != 0) {
             throw new BadRequestException("Invalid time");
         } else {
             for (ZonedDateTime iterator = scheduleRestModel.getStartTime();

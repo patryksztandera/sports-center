@@ -46,7 +46,7 @@ public class ReservationServiceTest {
                 ZonedDateTime.parse("2020-07-30T10:30:00+02:00"), 1L);
         scheduleService.add(schedule);
         final ClientRestModel client = new ClientRestModel("Name","Surname",
-                "sport.centre.no@gmail.com","+48 123 456 789");
+                "name.surname@email.com","password","+48 123 456 789");
         clientService.add(client);
     }
 
@@ -55,7 +55,7 @@ public class ReservationServiceTest {
         final ReservationRestModel reservation = new ReservationRestModel(2L,4L,5L);
 
         assertEquals(0, reservationRepository.count());
-        reservationService.add(reservation);
+        reservationRepository.save(reservationService.mapRestModel(reservation));
 
         assertEquals(1, reservationRepository.count());
     }

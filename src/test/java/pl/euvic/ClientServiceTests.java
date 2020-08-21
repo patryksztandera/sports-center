@@ -22,7 +22,8 @@ class ClientServiceTests {
 
 	@Test
 	void addClient() {
-		final ClientRestModel client = new ClientRestModel("Name","Surname","name.surname@gmail.com","+48 123 456 789");
+		final ClientRestModel client = new ClientRestModel("Name","Surname","name.surname@gmail.com",
+				"password","+48 123 456 789");
 
 		assertEquals(0, clientRepository.count());
 		clientService.add(client);
