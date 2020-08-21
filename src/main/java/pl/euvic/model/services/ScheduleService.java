@@ -42,11 +42,16 @@ public class ScheduleService {
                  iterator.isBefore(scheduleRestModel.getEndTime());
                  iterator = iterator.plusMinutes(30L)) {
 
-                ScheduleRestModel model = new ScheduleRestModel(
-                        iterator,
-                        iterator.plusMinutes(30),
-                        scheduleRestModel.getCourtId());
-                schedule.add(scheduleRepository.save(mapRestModel(model)).getId());
+                if (courtRepository.existsById(scheduleRestModel.getCourtId())) {
+                    ScheduleRestModel model = new ScheduleRestModel(
+                            iterator,
+                            iterator.plusMinutes(30),
+                            scheduleRestModel.getCourtId());
+                    schedule.add(scheduleRepository.save(mapRestModel(model)).getId());
+                }
+                else {
+                    throw new BadRequestException("There is no such court");
+                }
             }
         }
         return schedule;

@@ -3,7 +3,6 @@ package pl.euvic.model.services;
 import org.springframework.stereotype.Service;
 import pl.euvic.exceptions.BadRequestException;
 import pl.euvic.exceptions.NotFoundException;
-import pl.euvic.model.entities.CourtEntity;
 import pl.euvic.model.entities.ReservationEntity;
 import pl.euvic.model.entities.ScheduleEntity;
 import pl.euvic.model.repositories.ClientRepository;
@@ -53,18 +52,24 @@ public class ReservationService {
 
     public Long add(ReservationRestModel reservationRestModel) {
 
-        for (Long iterator = reservationRestModel.getStartScheduleId();
-             iterator <= reservationRestModel.getEndScheduleId();
-             iterator++) {
+        if (scheduleRepository.existsById(reservationRestModel.getStartScheduleId())
+                && scheduleRepository.existsById(reservationRestModel.getEndScheduleId())) {
+            for (Long iterator = reservationRestModel.getStartScheduleId();
+                 iterator <= reservationRestModel.getEndScheduleId();
+                 iterator++) {
 
-            ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
-            if (scheduleEntity.getReserved()) {
-                throw new BadRequestException("Reserved events were chosen");
-            } else {
-                scheduleEntity.setReserved(true);
-                scheduleRepository.save(scheduleEntity);
+                ScheduleEntity scheduleEntity = scheduleRepository.getById(iterator);
+                if (scheduleEntity.getReserved()) {
+                    throw new BadRequestException("Reserved events were chosen");
+                } else {
+                    scheduleEntity.setReserved(true);
+                    scheduleRepository.save(scheduleEntity);
+                }
             }
+        } else {
+            throw new BadRequestException("Out of range");
         }
+
         Long id = reservationRepository.save(mapRestModel(reservationRestModel)).getId();
 
         final ZonedDateTime startTime = reservationRepository.getOne(id).getStartReservation().getStartTime();

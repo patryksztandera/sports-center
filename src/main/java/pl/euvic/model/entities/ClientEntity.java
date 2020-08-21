@@ -24,7 +24,7 @@ public class ClientEntity {
     @Column
     private String surname;
 
-    @Column
+    @Column(length = 100, unique = true)
     @Email
     private String email;
 

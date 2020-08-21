@@ -29,8 +29,11 @@ public class AppUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        final List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("User"));
-        return authorities;
+        if (clientEntity.getId() == 1) {
+            return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 
     @Override
