@@ -32,7 +32,6 @@ public class CourtServiceTests {
 
         assertEquals(0, courtRepository.count());
         courtService.add(court);
-
         assertEquals(1, courtRepository.count());
     }
 
@@ -42,10 +41,8 @@ public class CourtServiceTests {
 
         assertEquals(0, courtRepository.count());
         courtService.add(court);
-
         assertEquals(1, courtRepository.count());
         courtService.deleteById(2L);
-
         assertEquals(0, courtRepository.count());
     }
 }
