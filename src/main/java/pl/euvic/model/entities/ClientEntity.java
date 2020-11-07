@@ -6,9 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "client")
@@ -39,13 +37,21 @@ public class ClientEntity {
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL)
     private final List<ReservationEntity> reservation = new ArrayList<>();
 
-    public ClientEntity(final String name, final String surname, final String email,
-                        final String password, final String phone) {
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<RoleEntity> roles;
+
+    public ClientEntity(String name, String surname, @Email String email,
+                        String password, @Pattern(regexp = "(\\+\\d{2} ?)?(\\d{3} \\d{3} \\d{3}|\\d{9})") String phone,
+                        List<RoleEntity> roles) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.roles = roles;
     }
 
     public ClientEntity() {
@@ -77,5 +83,9 @@ public class ClientEntity {
 
     public String getUsername() {
         return email;
+    }
+
+    public List<RoleEntity> getRoles() {
+        return roles;
     }
 }
