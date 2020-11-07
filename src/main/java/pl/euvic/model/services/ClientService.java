@@ -10,21 +10,28 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.euvic.configuration.AppUserPrincipal;
 import pl.euvic.exceptions.NotFoundException;
 import pl.euvic.model.entities.ClientEntity;
+import pl.euvic.model.entities.RoleEntity;
 import pl.euvic.model.repositories.ClientRepository;
+import pl.euvic.model.repositories.RoleRepository;
 import pl.euvic.model.responses.ClientRestModel;
+import pl.euvic.utils.RoleName;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class ClientService implements UserDetailsService {
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final ClientRepository clientRepository;
+    private final RoleRepository roleRepository;
 
-    public ClientService(final ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, RoleRepository roleRepository) {
         this.clientRepository = clientRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<ClientRestModel> getAll() {
@@ -46,13 +53,19 @@ public class ClientService implements UserDetailsService {
     }
 
     private ClientEntity mapRestModel(final ClientRestModel model) {
+        List<RoleEntity> list = new ArrayList<>();
+        if (model.getRole().equals("admin")) {
+            list.add(roleRepository.getRoleByName(RoleName.ROLE_ADMIN));
+        }
+        if (model.getRole().equals("user")){
+            list.add(roleRepository.getRoleByName(RoleName.ROLE_USER));
+        }
         return new ClientEntity(model.getName(), model.getSurname(), model.getEmail(),
-                passwordEncoder.encode(model.getPassword()), model.getPhone());
+                passwordEncoder.encode(model.getPassword()), model.getPhone(), list);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        ClientEntity clientEntity = clientRepository.getByEmail(email);
-        return new AppUserPrincipal(clientEntity);
+        return new AppUserPrincipal(clientRepository.getByEmail(email));
     }
 }

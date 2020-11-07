@@ -9,14 +9,15 @@ public class ClientRestModel {
     private String email;
     private String password;
     private String phone;
+    private String role;
 
-    public ClientRestModel(final String name, final String surname, final String email,
-                           final String password, final String phone) {
+    public ClientRestModel(String name, String surname, String email, String password, String phone, String role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.role = role;
     }
 
     public ClientRestModel() {
@@ -48,5 +49,9 @@ public class ClientRestModel {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getRole() {
+        return role;
     }
 }
