@@ -6,8 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.euvic.model.entities.ClientEntity;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public class AppUserPrincipal implements UserDetails {
 
@@ -29,11 +28,9 @@ public class AppUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (clientEntity.getId() == 1) {
-            return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else {
-            return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-        }
+        return clientEntity.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
     }
 
     @Override
