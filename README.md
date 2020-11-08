@@ -13,6 +13,7 @@ with an e-mail confirmation.
 ## Technologies
 * Spring Boot *version:* 2.3.1.RELEASE
 * Java JWT *version:* 3.8.3
+* MySQL *version:* 5.6
 ## Setup
 To run this application it is necessary to install MySQL server and 
 configure *application.yml* file or use h2 database configured in 
@@ -22,7 +23,7 @@ configuration. To run an application working with the h2 database
 enter `-Dspring.profiles.active=h2` in *VM options*.
 ## Security
 This application uses Json Web Tokens for authorization.  
-The first Post request must be a Client Post request to create a user with *ADMIN* role at the URL: localhost:*8080*/clients
+To create a *USER* or an *ADMIN*, make Post request at the URL: localhost:*8080*/clients
 using this template as a Body:
 
 ```
@@ -30,14 +31,22 @@ using this template as a Body:
     "name" : "name",
     "surname" : "surname",
     "email" : "name.surname@email.com",
-    "password":"password",
-    "phone" : "+48 123 456 789"
+    "password" : "password",
+    "phone" : "+48 123 456 789",
+    "role" : "user"
 }
 ```
 
-Without *ADMIN* you will not have access to */schedule* path. 
+Without *ADMIN* you will not have access to Post and Delete requests in */schedule* and */courts* paths. 
 To login use */login* path. Post JSON with an e-mail as your *username*
-and your *password*. Do not forget your password. 
+and your *password*. Do not forget your password. Default *ADMIN* login template:
+
+```
+{
+    "username" : "admin@mail.com",
+    "password" : "password"
+}
+```
 ## General instruction
 To make a reservation you need to create at least one Client, Court 
 and some slots in schedule. Slots are created automatically in a given 
@@ -51,7 +60,7 @@ You can reserve a court for more than 30 minutes.
 ##### Court
 ```
 {
-    "name":"Court Name"
+    "name" : "Court Name"
 }
 ```
 ##### Schedule
@@ -65,14 +74,14 @@ You can reserve a court for more than 30 minutes.
 ##### Reservation
 ```
 {
-    "startScheduleId":3,
-    "endScheduleId":4,
-    "clientId":1
+    "startScheduleId" : 3,
+    "endScheduleId" : 4,
+    "clientId" : 1
 }
 ```
 ##### Login
 ```
 {
-    "username":"name.surname@email.com",
-    "password":"password"
+    "username" : "name.surname@email.com",
+    "password" : "password"
 }
