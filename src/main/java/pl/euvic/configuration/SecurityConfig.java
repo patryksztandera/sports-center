@@ -3,6 +3,7 @@ package pl.euvic.configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,7 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/clients").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/schedule/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/courts/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/courts/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/schedule/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/schedule/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
